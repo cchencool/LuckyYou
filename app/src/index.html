@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- <script type="text/javascript"  src="./truffle-contract.js"></script> -->
+    <title>MetaCoin | Truffle Webpack Demo w/ Frontend</title>
+  </head>
+  <!-- <style>
+    input {
+      display: block;
+      margin-bottom: 12px;
+    }
+  </style> -->
+  <body>
+    <h1>Auction</h1>
+    <p>current auction address <strong id="currentAuction">loading...</strong>.</p>
+
+    <p>
+      <label for="bidtimelimit">bidtimelimit:</label>
+      <input type="text" id="bidtimelimit" placeholder="unit is second." />
+      <label for="benificiary_address">benificiary address:</label>
+      <input type="text" id="benificiary_address" placeholder="e.g. 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae"/>
+      <button onclick="App.startAuction()">start action</button>
+    </p>
+
+    <p>
+      <label for="join_auction">join acution address:</label>
+      <input type="text" id="join_auction" placeholder="e.g. 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae"/>
+      <button onclick="App.joinAuction()">join action</button>
+    </p>
+
+    <p>    
+      <lable for="biding_price">please input biding price: </lable>
+      <input type="text" id="biding_price" placeholder="unit is wei.">
+      <button onclick="App.bid()">bidding</button>
+    </p>
+
+    <p>End Time: <strong id="endTime">loading...</strong></p>
+    <p>highestBidder: <strong id="highestBidder">loading...</strong></p>
+    <p>highestAmount: <strong id="highestAmount">loading...</strong></p>
+    <p>winnerBidder: <strong id="winnerBidder">loading...</strong></p>
+    <p>winnerAmount: <strong id="winnerAmount">loading...</strong></p>
+
+    <p id="status"></p>
+    <p>
+      <strong>Hint:</strong> open the browser developer console to view any
+      errors and warnings.
+    </p>
+    <script src="index.js"></script>
+  </body>
+</html>

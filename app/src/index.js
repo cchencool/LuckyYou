@@ -33,7 +33,6 @@ const App = {
       auction.defaults({
         from: this.account,
         gas: 3000000,
-
       })
       this.contracts.auction = auction;
       this.contracts.auctionInsts = [];

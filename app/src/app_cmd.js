@@ -20,6 +20,7 @@ var MyContract = TruffleContract(MyContractArtifact);
 MyContract.setProvider(provider);
 
 const DEBUG_CONTRACT = false;
+const WORD_LENGTH = 10;
 const TESTCOUNT = DEBUG_CONTRACT ? 1 : 50;
 
 // var PROPOSAL_COUNT = 3;
@@ -132,8 +133,8 @@ async function start_lottery(accounts, log=false) {
         // });
     }
 
-    await buy(inst, accounts, log);
     try {
+        await buy(inst, accounts, log);
         await inst.lotteryEnd();
     }
     catch(e) {
@@ -168,7 +169,7 @@ async function buy(inst, accounts, log=false) {
         var buyer = accounts[i];
         var val = 5e17;
         var words = '';
-        for(j = 0; j < 5; j ++) {
+        for(j = 0; j < WORD_LENGTH; j ++) {
             words += characters.charAt(Math.floor((random() * characters.length)));
         }
         words32 = web3.utils.fromAscii(words, 32);

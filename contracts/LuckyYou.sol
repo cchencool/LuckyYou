@@ -14,28 +14,31 @@ contract LuckyYou {
     uint public prize_for_beneficiary;
     uint public lotteryEndTime;
     uint public winner_percent;
+    uint total_prize;
+    bytes32 seed;
     bool ended;
 
     address payable[] players;
     mapping(address => Ticket) player_shares;
     // mapping(address => uint) player_shares;
 
-    event lotteryEnded(address winner, uint winner_prize);
-    event log(bytes32 seed, uint denominator);
+    event lotteryEnded(address winner, uint winner_prize, uint beneficiary_prize);
+    event totalPrizeUpdated(uint totoal_prize);
+    // event log(bytes32 seed, uint denominator);
 
-    modifier onlyBefore(uint _time) {require (now < _time, "lottery already ended"); _ ;}
-    modifier onlyAfter(uint _time) {require (now < _time, "not at the time yet"); _ ;}
+    modifier onlyBefore(uint _time) {require(now < _time, "lottery already ended"); _ ;}
+    modifier onlyAfter(uint _time) {require(now < _time, "not at the time yet"); _ ;}
 
     constructor (uint _lotteryTime, address payable _benificiary, uint _winner_percent) public {
 
         require(_winner_percent < 100 && _winner_percent > 1, "winner prize percentage should between [1, 100)");
 
         beneficiary = _benificiary;
-        lotteryEndTime = now + _lotteryTime;
+        lotteryEndTime = now + _lotteryTime; // seconds
         winner_percent = _winner_percent;
     }
 
-    function buy(bytes32 words) public payable onlyBefore(lotteryEndTime) {
+    function buy(bytes32 words) public payable { // onlyBefore(lotteryEndTime) { // FIXME for performace test
 
         require(!player_shares[msg.sender].brought, "user already participated");
 
@@ -46,31 +49,35 @@ contract LuckyYou {
                 deposit : msg.value,
                 brought : true
             });
+            total_prize += msg.value;
+            seed ^= words;
+            emit totalPrizeUpdated(total_prize);
         }
     }
 
     function lotteryEnd() public {//onlyAfter(lotteryEndTime) {
 
         // 1.conditions
-        require(!ended, "lottery already ended!");
+        // require(!ended, "lottery already ended!");   // FIXME for performace test
 
         // 2. effect
         ended = true;
         // 2.1 draw
-        uint total_amount = 0;
-        bytes32 seed;
+        // uint total_amount = 0;
+        // bytes32 seed;
         require(players.length > 0, "no players");
-        for (uint i = 0; i < players.length; i++) {
-            total_amount += player_shares[players[i]].deposit;
-            seed ^= player_shares[players[i]].ticket_words;
-        }
-        prize_for_winner = total_amount * winner_percent / 100;
-        prize_for_beneficiary = total_amount - prize_for_winner;
+        // for (uint i = 0; i < players.length; i++) {
+        //     // total_amount += player_shares[players[i]].deposit;
+        //     seed ^= player_shares[players[i]].ticket_words;
+        // }
+        prize_for_winner = total_prize * winner_percent / 100;
+        prize_for_beneficiary = total_prize - prize_for_winner;
 
         // the more you buy, the higher change you win.
         // 2.2 find the winner position based on the share.
-        uint win_idx = luckyOne(seed, total_amount);
-        require(win_idx < total_amount, uint2str(win_idx));
+        // uint win_idx = luckyOne(seed, total_prize);
+        uint win_idx = luckyOne();
+        require(win_idx < total_prize, uint2str(win_idx));
         uint winner_idx = 0;
         uint current_loc = 0;
         for (;current_loc < win_idx; winner_idx++) {
@@ -80,7 +87,7 @@ contract LuckyYou {
         winner = players[winner_idx];
 
         // 2.2 split prize
-        emit lotteryEnded(winner, prize_for_winner);
+        emit lotteryEnded(winner, prize_for_winner, prize_for_beneficiary);
 
         // 3. interaction
         require(winner != address(0), "winner address wrong!");
@@ -88,14 +95,16 @@ contract LuckyYou {
         beneficiary.transfer(prize_for_beneficiary);
     }
 
-    function luckyOne(bytes32 seed, uint denominator) private view returns (uint) {
+    // function luckyOne(bytes32 seed, uint denominator) private view returns (uint) {
+    function luckyOne() private view returns (uint) {
         // return 0;
         // uint player_count = players.length;
-        require(denominator > 0, "denominator cannot be zero!");
-        // return uint(uint256(keccak256(abi.encode(seed, "bytes32"))) + block.timestamp + block.difficulty) % denominator;
-        // return uint(keccak256(abi.encodePacked(seed, block.timestamp, block.difficulty))) % denominator;
-        seed = keccak256(abi.encodePacked(block.timestamp, block.difficulty, now, seed));
-        return uint(seed) % denominator;
+        // require(denominator > 0, "denominator cannot be zero!");
+        require(total_prize > 0, "denominator cannot be zero!");
+        // seed = keccak256(abi.encodePacked(block.timestamp, block.difficulty, now, seed));
+        bytes32 final_seed = sha256(abi.encodePacked(block.timestamp, block.difficulty, now, seed, total_prize));
+        // return uint(seed) % denominator;
+        return uint(final_seed) % total_prize;
     }
 
     function uint2str(uint _i) internal pure returns (string memory _uintAsString) {

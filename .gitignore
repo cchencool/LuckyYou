@@ -1,5 +1,6 @@
 
-app/src/contracts
+*.log
+app/src/contracts/
 
 # Logs
 logs

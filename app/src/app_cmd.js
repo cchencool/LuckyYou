@@ -52,6 +52,7 @@ const created_player = "0xEA6A83414a473567CB7Ae10B8E59491BB2Bd8873";
 
     for (var j = 0; j < TESTCOUNT / BLOCKCOUNT; j ++) {
 
+        console.time('round cost')
         let promise = new Promise(function(resolve, reject){
             var lock = new AsyncLock();
             var insts = []
@@ -76,6 +77,10 @@ const created_player = "0xEA6A83414a473567CB7Ae10B8E59491BB2Bd8873";
         })
 
         await promise;
+        console.timeEnd('round cost');
+        // console.timeLog('round cost');
+
+
     }
 
     sleep.sleep(1);

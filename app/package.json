@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "async-lock": "^1.2.0",
+    "dateformat": "^3.0.3",
     "sleep": "^6.0.0",
     "table": "^5.2.3",
     "truffle-contract": "^4.0.12",

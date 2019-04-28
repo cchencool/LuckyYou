@@ -14,7 +14,7 @@ contract LuckyYou {
     uint public prize_for_beneficiary;
     uint public lotteryEndTime;
     uint public winner_percent;
-    uint total_prize;
+    uint public total_prize;
     bytes32 seed;
     bool ended;
 
@@ -38,7 +38,7 @@ contract LuckyYou {
         winner_percent = _winner_percent;
     }
 
-    function buy(bytes32 words) public payable { // onlyBefore(lotteryEndTime) { // FIXME for performace test
+    function buy(bytes32 words) public payable {// onlyBefore(lotteryEndTime) { // FIXME for performace test
 
         require(!player_shares[msg.sender].brought, "user already participated");
 

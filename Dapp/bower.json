@@ -1,0 +1,20 @@
+{
+  "name": "goodsmanagersystem",
+  "authors": [
+    "guchenghao <1754926878@qq.com>"
+  ],
+  "description": "A system of Goods",
+  "main": "demo.html",
+  "keywords": [
+    "Goods"
+  ],
+  "license": "MIT",
+  "homepage": "demo.html",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

@@ -19,7 +19,7 @@ const App = {
       // const networkId = await web3.eth.net.getId();
       // const deployedNetwork = auctionArtifact.networks[networkId];
       const provider = this.web3.currentProvider;
-      
+
       // get accounts
       const accounts = await web3.eth.getAccounts();
       this.account = accounts[0];
@@ -61,7 +61,7 @@ const App = {
     }
 
     this.startListeningEvents(auctionInst);
-    
+
     var endTimeBN = await auctionInst.auctionEndTime.call();
     var endTime = endTimeBN.toNumber() * 1000;
     this.refreshEndTime(endTime);
@@ -88,7 +88,7 @@ const App = {
     this.refreshEndTime(endTime);
     this.refreshHighestBidding(highestBidder, highestAmount);
     this.refreshWinner(NONE_STR, NONE_STR);
-    
+
     if (endTime < (new Date()).getTime()) {
       this.refreshWinner(highestBidder, highestAmount);
       this.contracts.auctionInsts.pop();
@@ -97,7 +97,7 @@ const App = {
   },
 
   startListeningEvents: async function(auctionInst) {
-    
+
     // listening event method 1
     var incEvent = await auctionInst.HighestBidIncreased({}, (error, response) => {
       if (!error) {
@@ -126,11 +126,11 @@ const App = {
         this.refreshWinner(retvals.winner, amount);
         var inst = this.contracts.auctionInsts.pop();
         inst.withdraw(); // bug here
-      } else { 
+      } else {
         console.log(error);
-      } 
+      }
     });
-       
+
     const currentAuctionEle = document.getElementById("currentAuction");
     currentAuctionEle.innerHTML = auctionInst.address;
   },
@@ -176,7 +176,7 @@ const App = {
     winnerBidderEle.innerHTML = winner;
 
     const winnerAmountEle = document.getElementById("winnerAmount");
-    winnerAmountEle.innerHTML = amount;    
+    winnerAmountEle.innerHTML = amount;
 
     this.setStatus("Auction Finished!")
   },
@@ -185,7 +185,7 @@ const App = {
     const status = document.getElementById("status");
     status.innerHTML = message;
   },
-  
+
 }
 
 window.App = App;

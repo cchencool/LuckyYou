@@ -15,8 +15,8 @@ contract LuckyYou {
     uint public lotteryEndTime;
     uint public winner_percent;
     uint public total_prize;
+    bool public ended;
     bytes32 seed;
-    bool ended;
 
     address payable[] players;
     mapping(address => Ticket) player_shares;

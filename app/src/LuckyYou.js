@@ -59,6 +59,8 @@ const App = {
 
         var endTimeBN = await lotteryInst.lotteryEndTime.call();
         var endTime = endTimeBN.toNumber() * 1000;
+        // return {addr: lotteryInst.address, endTime: endTime, 
+        //     prize: totalPrize, beneficiary: beneficiary, winner: NONE_STR};
         // refresh current lottery address;
         this.refreshCurrentLotteryAddress(lotteryInst.address);
         // refresh end time as endTime

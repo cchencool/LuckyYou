@@ -44,6 +44,7 @@ LotterySys.config(function ($routeProvider) {
 
 LotterySys.controller("generateLotterycontroller", function ($scope, $route, $window, appService, $timeout) {
     $scope.curLottery = {};
+    $scope.joinAddress = '';
     appService.check_app_scope($window.App, 'generateLotterycontroller', $scope);
 
     $scope.generateLottery = function (curLottery) {
@@ -53,6 +54,14 @@ LotterySys.controller("generateLotterycontroller", function ($scope, $route, $wi
             $timeout($scope.reload, 2000);
         });
 
+    };
+
+    $scope.join_addr_lottery = function (join_addr) {
+        console.log(join_addr)
+        window.App.joinlottery(join_addr).then(() => {
+            $timeout($scope.reload, 2000);
+
+        });
     }
 });
 
@@ -92,7 +101,7 @@ LotterySys.controller("joincontroller", function ($scope, $route, $window, appSe
 LotterySys.controller("buyLotterycontroller", function ($scope, $route, $window, get_wordsService, appService, $timeout) {
     $scope.lotteryAccount = [];
     $scope.allbuylottery = [];
-    $scope.def_amount = 5;
+    $scope.def_amount = 1;
 
     appService.check_app_scope($window.App, 'buyLotterycontroller', $scope);
     setTimeout(() => {
@@ -130,7 +139,7 @@ LotterySys.controller("buyLotterycontroller", function ($scope, $route, $window,
                     });
                 } else {
                     if (finalSelectedList[index].buyamount) {
-                        window.App.buy(finalSelectedList[index].address, finalSelectedList[index].buyamount * 1e17, $scope.lotteryAccount[index].def_words).then(() => {
+                        window.App.buy(finalSelectedList[index].address, finalSelectedList[index].buyamount * 1e18, $scope.lotteryAccount[index].def_words).then(() => {
                             window.App.revealAccounts($scope.lotteryAccount).then(() => {
                                 $timeout($scope.reload, 2000);
                             });
@@ -138,14 +147,14 @@ LotterySys.controller("buyLotterycontroller", function ($scope, $route, $window,
                     }
 
                     if (finalSelectedList[index].words) {
-                        window.App.buy(finalSelectedList[index].address, $scope.def_amount * 1e17, finalSelectedList[index].words).then(() => {
+                        window.App.buy(finalSelectedList[index].address, $scope.def_amount * 1e18, finalSelectedList[index].words).then(() => {
                             window.App.revealAccounts($scope.lotteryAccount).then(() => {
                                 $timeout($scope.reload, 2000);
                             });
                         });
                     }
 
-                    window.App.buy(finalSelectedList[index].address, $scope.def_amount * 1e17, $scope.lotteryAccount[index].def_words).then(() => {
+                    window.App.buy(finalSelectedList[index].address, $scope.def_amount * 1e18, $scope.lotteryAccount[index].def_words).then(() => {
                         window.App.revealAccounts($scope.lotteryAccount).then(() => {
                             $timeout($scope.reload, 2000);
                         });

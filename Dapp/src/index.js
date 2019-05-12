@@ -75,13 +75,13 @@ const App = {
 
     createlottery: async function () {
 
-        if (this.contracts.lotteryInst) {
-            var isEnded = await lotteryInst.ended.call();
-            if (!isEnded) {
-                console.log('lottery not ended yet!');s
-                return;
-            }
-        }
+        // if (this.contracts.lotteryInst) {
+        //     var isEnded = await lotteryInst.ended.call();
+        //     if (!isEnded) {
+        //         console.log('lottery not ended yet!');s
+        //         return;
+        //     }
+        // }
         // TODO aquire end time
         const timespan = this.getTimeSpan(); // in seconds
         // TODO aquire benificiary_address
@@ -124,11 +124,14 @@ const App = {
 
         this._startListeningEvents(lotteryInst);
 
+        var winner = await lotteryInst.winner.call();
         var beneficiary = await lotteryInst.beneficiary.call();
         var endTimeBN = await lotteryInst.lotteryEndTime.call();
         var totalPrize = await lotteryInst.total_prize.call();
 
         var endTime = endTimeBN.toNumber() * 1000;
+        // refresh current lottery address
+        this.refreshCurrentLotteryAddress(lotteryInst.address)
         // TODO refresh end time as endTime
         this.refreshEndTime(endTime);
         // TODO refresh prize
@@ -138,7 +141,7 @@ const App = {
         // TODO refresh winner as None.
         this.refreshWinner(NONE_STR);
         // historical lottery
-        if (endTime < (new Date()).getTime()) {
+        if (endTime < (new Date()).getTime() || (winner!=undefined || winner != '' && winner.length == 42)) {
             // TODO refresh winner
             this.refreshWinner(winner);
             // remove ended instance.
@@ -168,7 +171,7 @@ const App = {
                 var winner_prize = String(retvals.winner_prize);
                 // var beneficiary_prize = String(retvals.beneficiary_prize);
                 // refresh total_prize
-                this.refreshPrize(winner_prize);
+                // this.refreshPrize(winner_prize);
                 // refresh winner as None.
                 this.refreshWinner(winner);
                 this.contracts.lotteryInsts.pop();
@@ -230,7 +233,7 @@ const App = {
     refreshPrize: async function (prize) {
         // TODO
         var scope = this.view_scopes.generateLotterycontroller;
-        scope.curLottery.priceamount = prize;
+        scope.curLottery.priceamount = String(prize);
     },
 
     refreshWinner: async function (winner) {

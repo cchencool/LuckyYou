@@ -25,10 +25,12 @@ We're doomed!
                 <h4 class="modal-title" id="myModalLabel">System Introduction</h4>
             </div>
             <div class="modal-body">
-                一个公司希望为控制它的货存建立一个出库管理新系统。货存中的产品被分为几类，如服装、食品和文具。当产品需要从供应商那里重新订购时，工作人员需要提出一个购买清单。跟踪记录要提供买进、卖出的货物以及其他费用。
+                LuckyYou is a lottery purchase system based on blockchain technology. It provides a fair, smart, secure,
+                convenient environment for anyone who intend to buy, check and join the lottery to win the big prize.
+                More functions come soon
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -36,7 +38,7 @@ We're doomed!
 <div class="container">
     <div class="row">
         <div class="jumbotron">
-            <h1 id="Goods_system">Lucky You Lottery Sysytem</h1>
+            <h1 id="Goods_system">Lucky You Lottery System</h1>
             <p></p>
             <p>
                 <a class="btn btn-primary btn-lg" role="button" data-toggle="modal" data-target="#myModal">more</a>
@@ -60,7 +62,7 @@ We're doomed!
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="inputPPrice" class="col-sm-3 control-label">Price Percentage</label>
+                        <label for="inputPPrice" class="col-sm-3 control-label">Price Ratio</label>
                         <div class="col-sm-9">
                             <input type="number" class="form-control" id="inputPPrice" min="1" max="100"
                                 placeholder="Current lottery price Percentage(0% to 100%)" ng-model="curLottery.PPrice">
@@ -74,13 +76,24 @@ We're doomed!
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-4 text-right">
+                        <label for="inputTimespan" class="col-sm-3 control-label time text-danger">Joining at Address</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="inputTimespan"
+                                placeholder="Lottery Address to join" ng-model="joinAddress">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4 text-center pull-left">
                             <button type="button" class="btn btn-primary btn-group-justified active btn-lg"
                                 ng-click="generateLottery(curLottery)">Generate</button>
                         </div>
+                        <div class="col-sm-4 text-center pull-right">
+                            <button type="submit" class="btn btn-info btn-group-justified active btn-lg"
+                                ng-click="join_addr_lottery(joinAddress)">join</button>
+                        </div>
                     </div>
                 </form>
-                <div class="panel panel-body" ng-controller="joinAddcontroller">
+                <!-- <div class="panel panel-body" ng-controller="joinAddcontroller">
                     <h2 class="headText">Join Lottery</h2>
                     <div class="pull-left col-sm-6">
                         <form class="form-horizontal" role="form" id="joinLotteryForm"
@@ -99,7 +112,7 @@ We're doomed!
                             </div>
                         </form>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="pull-right col-sm-6">
                 <ul class="list-group">
@@ -109,7 +122,7 @@ We're doomed!
                     </li>
                     <li class="list-group-item list-group-item-text">
                         <span class="badge">{{curLottery.priceamount}}</span>
-                        Current Price Amount:
+                        Current Prize Amount:
                     </li>
                     <li class="list-group-item list-group-item-text">
                         <span class="badge">{{curLottery.winner}}</span>
@@ -181,8 +194,8 @@ We're doomed!
                     <tr>
                         <th>CheckBox</th>
                         <th>Accounts</th>
-                        <th>Balance(1e17)</th>
-                        <th>Buy Amount(default: 5e17)</th>
+                        <th>Balance(1e18)</th>
+                        <th>Buy Amount(default: 1 ETH = 1e18 Wei)</th>
                         <th>Words</th>
                     </tr>
                 </thead>
@@ -195,7 +208,7 @@ We're doomed!
                             </div>
                         </td>
                         <td>{{account.address}}</td>
-                        <td>{{account.balance / 1e17}}</td>
+                        <td>{{account.balance / 1e18}}</td>
 
                         <td>
                             <div>

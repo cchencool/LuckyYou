@@ -12,4 +12,5 @@ HKUST  MSBD6000D Blockchain project. A lottery game in Ethereum Smart Contract &
 3. run command `npm install` in `/Dapp`. (for dapp)
 4. run command `npm install` in `/app`. (for performance test scripts)
 5. run command `bower install` in `/Dapp`.
-6. open brower `http://localhost:5500`
+6. run command `npm run dev` in `/Dapp`.
+7. open brower `http://localhost:8080`
